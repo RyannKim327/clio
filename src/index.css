@@ -1,0 +1,21 @@
+@import "tailwindcss";
+
+:root {
+  --background: #ffffff;
+  --secondary-background: #cacbcc;
+  --foreground: #000000;
+}
+
+@media(prefers-color-scheme: dark){
+  :root{
+    --background: #000000;
+    --secondary-background: #121212;
+    --foreground: #ffffff;
+  }
+}
+
+@theme inline{
+  --color-bg: var(--background);
+  --color-fg: var(--foreground);
+  --color-secondary-bg: var(--secondary-background);
+}
