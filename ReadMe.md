@@ -99,7 +99,7 @@ Contributions are welcome! If you have ideas, bug fixes, or feature suggestions:
 
 ## 📝 License
 
-This project is licensed under the [MIT License](LICENSE).
+This project is licensed under the [MIT License](/License.md).
 
 ---
 

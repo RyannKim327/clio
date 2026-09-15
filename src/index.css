@@ -2,7 +2,8 @@
 
 :root {
   --background: #ffffff;
-  --secondary-background: #cacbcc;
+  --secondary-background: #fafbfc;
+  --border-coloe: #D9B373;
   --foreground: #000000;
 }
 
@@ -10,6 +11,7 @@
   :root{
     --background: #000000;
     --secondary-background: #121212;
+    --border-color: #B38B4D;
     --foreground: #ffffff;
   }
 }
@@ -18,4 +20,5 @@
   --color-bg: var(--background);
   --color-fg: var(--foreground);
   --color-secondary-bg: var(--secondary-background);
+  --color-border: var(--border-coloe);
 }
