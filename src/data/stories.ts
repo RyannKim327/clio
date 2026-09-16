@@ -3,7 +3,7 @@ export const stories = [
     title: "Melody Beneath the Pages",
     author: "Sakana AI",
     cover: "https://wallpapers.com/images/high/iu-in-brown-coat-2b59nkxx8y8hpdes.webp",
-    chapters: [
+    storyline: [
       {
         "content": "The rain had not stopped for three days. It drummed against the tin roof of the small internet cafe tucked between a sari-sari store and a shuttered photo studio on the outskirts of Manila. Inside, the air smelled of instant coffee, fried fish from the corner carinderia, and the faint metallic scent of old computer fans working too hard. At table seven, a girl named Elara sat with her fingers frozen above the keyboard, staring at a blinking cursor that seemed to mock her with every pulse."
       },
