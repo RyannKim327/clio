@@ -1,7 +1,23 @@
-export const stories = [
+interface _chapter {
+  content: string
+  music?: string
+  end?: boolean
+}
+
+interface _book {
+  id?: number
+  title: string
+  author: string
+  description: string
+  cover?: string
+  chapters: _chapter[][]
+}
+
+export const stories: _book[] = [
   {
     title: "Melody Beneath the Pages",
     author: "Sakana AI",
+    description: "A random story from sakana ai, basta di to saken",
     cover: "https://wallpapers.com/images/high/iu-in-brown-coat-2b59nkxx8y8hpdes.webp",
     chapters: [
       [
