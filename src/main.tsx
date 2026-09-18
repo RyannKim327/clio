@@ -13,7 +13,7 @@ createRoot(document.getElementById('root')!).render(
         <Routes>
           <Route path='' element={<Reader />} />
           <Route path="author" element={<AuthorPage />} />
-          <Route path='read' element={<Read />} />
+          <Route path='read/:id' element={<Read />} />
         </Routes>
       </HashRouter>
     </div>

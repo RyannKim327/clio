@@ -2,12 +2,12 @@ import { stories } from "@/data/stories";
 import { markdownToHtml } from "@/lib/markdown";
 import { splitSegmentsByStartEnd } from "@/lib/split-segments";
 import { ArrowLeft } from "lucide-react";
-import { Link, useSearchParams } from "react-router";
+import { Link, useParams, useSearchParams } from "react-router";
 
 export default function Read() {
   const [searchParams] = useSearchParams()
-  const id = searchParams.get("id")
-  const chapter = parseInt(searchParams.get("c") ?? "0")
+  const { id } = useParams()
+  const chapter = searchParams.get("c") ?? "chapter 1"
   const story = stories[parseInt(id)]
 
   const chapters = splitSegmentsByStartEnd(story.chapters[chapter])
@@ -25,13 +25,13 @@ export default function Read() {
         </div>
       </div>
 
-      <div className="grid grid-cols-3 w-[calc(90%-1rem)] h-full">
+      <div className="grid grid-cols-3 w-[calc(90%-1rem)] h-full overflow-hidden">
         <div className="col-span-1 flex flex-col overflow-y-auto sticky">
           <span>Test</span>
         </div>
         <div className="col-span-2 flex flex-col gap-24 overflow-x-hidden scrollbar-thin scrollbar-thumb-secondary-bg snap-mandatory snap-y">
           <div className="sticky top-0 bg-secondary-bg p-2 text-center">
-            Chapter {chapter + 1}
+            Chapter {chapter}
           </div>
           {
             chapters.map((line) => {
