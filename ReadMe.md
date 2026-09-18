@@ -1,6 +1,8 @@
 # Clio
 ### Ryann Kim Sesgundo (Master Piece of Paper)
 
+[![wakatime](https://wakatime.com/badge/github/RyannKim327/clio.svg)](https://wakatime.com/badge/github/RyannKim327/clio)
+
 > A platform for novels, stories, and poetry — where every chapter has a soundtrack.
 
 Clio is a web-based reading platform developed in the Philippines, inspired by the spirit of storytelling and the Muse of history herself. Built with **React**, **TypeScript**, and **Vite**, Clio reimagines how readers experience fiction by letting authors add **background music to specific chapters and scenes**, creating an immersive, cinematic reading journey.
