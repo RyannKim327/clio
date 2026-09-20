@@ -1,3 +1,4 @@
+import BookPreview from "@/components/modals/book-preview";
 import Book from "@/components/ui/book";
 import Header from "@/components/widgets/header";
 import Modal from "@/components/widgets/modal";
@@ -41,14 +42,7 @@ export default function Reader() {
         }
       </div>
       <Modal closeModal={closeModal} show={action === "book" && book !== null}>
-        <div className="flex flex-col items-center">
-          <span>{book?.title}</span>
-          <span className="text-xs">{book?.author}</span>
-          <span className="border-l-2 border-l-solid border-l-border pl-3">{book?.description}</span>
-          <Link
-            className="bg-border/50 rounded-sm w-full text-center p-2 mt-5 text-xs"
-            to={`read/${book?.id}`}>Read story</Link>
-        </div>
+        <BookPreview book={book} />
       </Modal>
     </div>
   )
