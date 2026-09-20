@@ -36,7 +36,7 @@ interface header {
 export default function Header({ setAction, action }: header) {
 
   return (
-    <div className="flex justify-between items-center w-full h-10 bg-secondary-bg border-b-2 border-b-solid border-border px-2 sticky top-0 z-10 mb-2">
+    <div className="flex justify-between items-center w-full h-10 bg-secondary-bg border-b-2 border-b-solid border-border p-2 px-4 sticky top-0 z-10 mb-2">
       <span>Clio</span>
 
       <nav className="flex gap-2">
@@ -61,6 +61,7 @@ export default function Header({ setAction, action }: header) {
           )
         })}
       </nav>
+
       <Modal
         className="max-w-[calc(50%-1rem)]"
         closeModal={() => { setAction("") }}

@@ -2,7 +2,7 @@ export default function About() {
   return (
     <div className="flex flex-col items-center">
       <h1 className="text-xl border-b-border border-b border-b-solid w-full text-center mb-5">About</h1>
-      <p>
+      <p className="border-l-2 border-l-solid border-l-border pl-2">
         <b className="text-border">Clio</b>, is a reading platform dedicated to novels, stories, and poetry.
         Named after the Muse of history and heroic tales, it was created to celebrate the art of storytelling in a more immersive way.
         Unlike traditional reading apps, Clio lets authors attach background music to individual chapters and scenes,
