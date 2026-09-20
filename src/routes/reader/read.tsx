@@ -1,7 +1,8 @@
 import { stories } from "@/data/stories";
 import { markdownToHtml } from "@/lib/markdown";
 import { splitSegmentsByStartEnd } from "@/lib/split-segments";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, Menu, X } from "lucide-react";
+import { useState } from "react";
 import { Link, useLocation, useNavigate, useParams, useSearchParams } from "react-router";
 
 export default function Read() {
@@ -11,7 +12,7 @@ export default function Read() {
   const navigate = useNavigate()
   const chapter = searchParams.get("c") ?? "chapter 1"
   const story = stories[parseInt(id)]
-
+  const [showChapters, setShowChapters] = useState(false)
   const chapters = splitSegmentsByStartEnd(story.chapters[chapter.toLowerCase()])
 
   function toTop() {
@@ -37,28 +38,46 @@ export default function Read() {
       </div>
 
       <div className="flex w-[calc(90%-1rem)] justify-between h-full overflow-hidden">
-        <div className="flex flex-col w-[calc(25%-1rem)] overflow-y-auto sticky">
-          <div className="sticky top-0 bg-secondary-bg p-2 text-center mb-5">
-            Chapter Lists
+        <div className={`flex flex-col w-full md:w-[calc(25%-1rem)] overflow-y-auto fixed ${showChapters ? "left-0" : "-left-full"} p-5 md:p-0 top-15 bottom-0 bg-bg md:sticky transition-all delay-75`}>
+          <div className="flex justify-between md:justify-center bg-secondary-bg p-2 text-center mb-5">
+            <span>Chapter Lists</span>
+            <span
+              onClick={() => {
+                setShowChapters(false)
+              }}
+              className={`md:hidden`}>
+              <X />
+            </span>
           </div>
-          {
-            Object.keys(story.chapters).map(chap => {
-              return (
-                <span
-                  className={`border-b border-b-solid border-fg hover:border-border hover:text-border p-2 cursor-pointer select-none ${chap.toLowerCase() === chapter.toLowerCase() ? "border-b-border text-border" : ""}`}
-                  onClick={() => {
-                    toTop()
-                    const params = new URLSearchParams(location.search)
-                    params.set("c", chap)
-                    navigate(`${location.pathname}?${params.toString()}`)
-                  }}
-                > {chap.toUpperCase()}</span>
-              )
-            })
-          }
+          <div className="flex flex-col gap-2 overflow-y-auto">
+            {
+              Object.keys(story.chapters).map((chap, i: number) => {
+                return (
+                  <span
+                    key={i}
+                    className={`border-b border-b-solid border-fg hover:border-border hover:text-border p-2 cursor-pointer select-none ${chap.toLowerCase() === chapter.toLowerCase() ? "border-b-border text-border" : ""}`}
+                    onClick={() => {
+                      toTop()
+                      setShowChapters(false)
+                      const params = new URLSearchParams(location.search)
+                      params.set("c", chap)
+                      navigate(`${location.pathname}?${params.toString()}`)
+                    }}
+                  > {chap.toUpperCase()}</span>
+                )
+              })
+            }
+          </div>
         </div>
-        <div className="flex flex-col w-[calc(70%-1rem)] gap-2">
-          <div className="bg-secondary-bg p-2 text-center">
+        <div className="flex flex-col w-full md:w-[calc(70%-1rem)] gap-2">
+          <div className="flex gap-2 md:justify-center bg-secondary-bg p-2 text-center">
+            <span
+              onClick={() => {
+                setShowChapters(true)
+              }}
+              className="md:hidden">
+              <Menu />
+            </span>
             {chapter.toUpperCase()}
           </div>
           <div
@@ -74,7 +93,7 @@ export default function Read() {
                     {line.map((c, j: number) => {
                       return (
                         <p
-                          id={i === 0 ? "headToTop" : ""}
+                          id={`${i}:${j}`}
                           key={`${i}:${j}`}
                           className="font-semibold font-serif"
                           dangerouslySetInnerHTML={{ __html: markdownToHtml(c.content) }} />

@@ -1,4 +1,4 @@
-export default function Search() {
+export default function SearchForm() {
   return (
     <div
       className="flex flex-col w-md">

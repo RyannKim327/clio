@@ -1,4 +1,4 @@
-export default function Login() {
+export default function LoginForm() {
   return (
     <div className="flex flex-col w-md">
       <h1 className="text-xl border-b-border border-b border-b-solid w-full text-center mb-5">Login</h1>

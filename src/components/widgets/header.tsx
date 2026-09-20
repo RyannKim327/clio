@@ -1,9 +1,9 @@
-import { House, Info, Search as s, User } from "lucide-react"
+import { House, Info, Search, User } from "lucide-react"
 import { Link } from "react-router"
 import About from "@/components/modals/about"
-import Search from "@/components/modals/forms/search"
+import SearchForm from "@/components/modals/forms/search"
 import Modal from "./modal"
-import Login from "@/components/modals/forms/login"
+import LoginForm from "@/components/modals/forms/login"
 
 const navs = [
   {
@@ -19,7 +19,7 @@ const navs = [
   {
     title: "Search",
     action: "search",
-    icon: <s />
+    icon: <Search />
   },
   {
     title: "Login",
@@ -70,12 +70,12 @@ export default function Header({ setAction, action }: header) {
       <Modal
         closeModal={() => { setAction("") }}
         show={action === "search"}>
-        <Search />
+        <SearchForm />
       </Modal>
       <Modal
         closeModal={() => { setAction("") }}
         show={action === "login"}>
-        <Login />
+        <LoginForm />
       </Modal>
     </div>
   )
