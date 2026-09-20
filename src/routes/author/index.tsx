@@ -6,7 +6,7 @@ export default function AuthorPage() {
 
   return (
     <div className="flex flex-col gap-2 w-full h-full">
-      <Header setAction={setAction} />
+      <Header setAction={setAction} action={action} />
       <span>For authors</span>
     </div>
   )

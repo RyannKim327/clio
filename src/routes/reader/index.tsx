@@ -22,7 +22,7 @@ export default function Reader() {
 
   return (
     <div className="flex flex-col w-full h-full overflow-hidden">
-      <Header setAction={setAction} />
+      <Header setAction={setAction} action={action} />
       <div className="grid grid-cols-5 gap-2 m-2 w-[calc(90%-1rem)]">
         {
           stories.map((story: c_book, i: number) => {
