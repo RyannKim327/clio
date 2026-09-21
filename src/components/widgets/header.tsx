@@ -4,6 +4,7 @@ import About from "@/components/modals/about"
 import SearchForm from "@/components/modals/forms/search"
 import Modal from "./modal"
 import LoginForm from "@/components/modals/forms/login"
+import { useState, type ChangeEvent, type SubmitEvent } from "react"
 
 const navs = [
   {
@@ -17,7 +18,6 @@ const navs = [
     icon: <Info />
   },
   {
-    title: "Search",
     action: "search",
     icon: <Search />
   },
@@ -34,12 +34,34 @@ interface header {
 }
 
 export default function Header({ setAction, action }: header) {
+  const [search, setSearch] = useState("")
+  function submitForm(event: SubmitEvent<HTMLFormElement>) { }
 
   return (
-    <div className="flex justify-between items-center w-full h-10 bg-secondary-bg border-b-2 border-b-solid border-border p-2 px-4 sticky top-0 z-10 mb-2">
+    <div className="flex justify-between items-center w-full h-15 bg-secondary-bg border-b-2 border-b-solid border-border p-2 px-4 sticky top-0 z-10 mb-2">
       <span>Clio</span>
 
-      <nav className="flex gap-2">
+      <nav className="flex items-center gap-2 py-5">
+        <form
+          onSubmit={submitForm}
+          className="hidden md:flex gap-1 border-fg border-solid border px-2 py-1 rounded w-full mx-5">
+
+          <input
+            value={search}
+            onChange={(e: ChangeEvent<HTMLInputElement, HTMLInputElement>) => {
+              setSearch(e.target.value)
+            }}
+            className="outline-none border-none w-full text-xs"
+            type="search"
+            placeholder="e.g: Title, Author, Genre" />
+
+          <span className="text-sm">|</span>
+          <button className="text-xs" type="submit">
+            <Search />
+          </button>
+
+        </form>
+
         {navs.map((nav, i: number) => {
           return (
             nav.endpoint ?
@@ -54,7 +76,7 @@ export default function Header({ setAction, action }: header) {
                   setAction(nav.action ?? "")
                 }}
                 key={`${i}. ${nav.title}`}
-                className="list-none cursor-pointer">
+                className={`${!nav.title ? "md:hidden" : ""} list-none cursor-pointer`}>
                 <span className="hidden md:inline">{nav.title}</span>
                 <span className="md:hidden">{nav.icon}</span>
               </li>
@@ -78,6 +100,6 @@ export default function Header({ setAction, action }: header) {
         show={action === "login"}>
         <LoginForm />
       </Modal>
-    </div>
+    </div >
   )
 }

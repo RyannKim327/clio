@@ -24,7 +24,7 @@ export default function Modal({ className, closeModal, show, children }: modal) 
         <X />
       </span>
       <div
-        className={`${className ?? "max-w-[calc(75%-0.5rem)] md:max-w-[calc(50%-1rem)]"} select-none max-h-[calc(50%-0.5rem)] flex bg-secondary-bg p-3 rounded pointer-events-auto overflow-y-auto`}>
+        className={`${className ?? "max-w-[calc(75%-0.5rem)] md:max-w-[calc(50%-1rem)]"} select-none max-h-[calc(50%-0.5rem)] flex bg-secondary-bg p-3 rounded pointer-events-auto overflow-y-auto scrollbar-thin scrollbar-thumb-border scrollbar-track-bg`}>
         {children}
       </div>
     </div>

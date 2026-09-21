@@ -25,7 +25,7 @@ export default function Reader() {
       <Header setAction={setAction} action={action} />
       <div className="flex flex-col h-full w-full px-5">
         <h1 className="text-center text-lg border-b-border border-b-solid border-b mb-10 pb-2 pt-5">Recent Stories</h1>
-        <div className="grid grid-cols-5 gap-8 m-2 w-[calc(90%-1rem)] overflow-hidden overflow-y-auto">
+        <div className="grid grid-cols-3 md:grid-cols-5 gap-8 m-2 w-[calc(90%-1rem)] overflow-hidden overflow-y-auto">
           {
             stories.map((story: c_book, i: number) => {
               return <Book

@@ -38,14 +38,14 @@ export default function Read() {
       </div>
 
       <div className="flex w-[calc(90%-1rem)] justify-between h-full overflow-hidden">
-        <div className={`flex flex-col w-full md:w-[calc(25%-1rem)] overflow-y-auto fixed ${showChapters ? "left-0" : "-left-full"} p-5 md:p-0 top-15 bottom-0 bg-bg md:sticky transition-all delay-75`}>
+        <div className={`flex flex-col w-[calc(75%-0.5rem)] md:w-[calc(25%-1rem)] overflow-y-auto fixed ${showChapters ? "left-0" : "-left-full"} p-5 md:p-0 top-15 bottom-0 bg-bg md:sticky transition-all delay-75`}>
           <div className="flex justify-between md:justify-center bg-secondary-bg p-2 text-center mb-5">
-            <span>Chapter Lists</span>
+            <span className="font-serif font-semibold">Chapter Lists</span>
             <span
               onClick={() => {
                 setShowChapters(false)
               }}
-              className={`md:hidden`}>
+              className={`md:hidden cursor-pointer`}>
               <X />
             </span>
           </div>
@@ -55,7 +55,7 @@ export default function Read() {
                 return (
                   <span
                     key={i}
-                    className={`border-b border-b-solid border-fg hover:border-border hover:text-border p-2 cursor-pointer select-none ${chap.toLowerCase() === chapter.toLowerCase() ? "border-b-border text-border" : ""}`}
+                    className={`border-b border-b-solid border-fg hover:border-border font-serif hover:text-border p-2 cursor-pointer select-none ${chap.toLowerCase() === chapter.toLowerCase() ? "border-b-border text-border" : ""}`}
                     onClick={() => {
                       toTop()
                       setShowChapters(false)
@@ -70,12 +70,12 @@ export default function Read() {
           </div>
         </div>
         <div className="flex flex-col w-full md:w-[calc(70%-1rem)] gap-2">
-          <div className="flex gap-2 md:justify-center bg-secondary-bg p-2 text-center">
+          <div className="flex gap-2 md:justify-center bg-secondary-bg p-2 text-center font-serif font-semibold">
             <span
               onClick={() => {
                 setShowChapters(true)
               }}
-              className="md:hidden">
+              className="md:hidden cursor-pointer">
               <Menu />
             </span>
             {chapter.toUpperCase()}
