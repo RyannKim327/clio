@@ -35,7 +35,9 @@ interface header {
 
 export default function Header({ setAction, action }: header) {
   const [search, setSearch] = useState("")
-  function submitForm(event: SubmitEvent<HTMLFormElement>) { }
+  function submitForm(event: SubmitEvent<HTMLFormElement>) {
+    event.preventDefault()
+  }
 
   return (
     <div className="flex justify-between items-center w-full h-15 bg-secondary-bg border-b-2 border-b-solid border-border p-2 px-4 sticky top-0 z-10 mb-2">

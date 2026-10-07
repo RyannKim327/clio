@@ -5,7 +5,7 @@ export default function SearchForm() {
   const [search, setSearch] = useState("")
 
   function submitForm(event: SubmitEvent<HTMLFormElement>) {
-
+    event.preventDefault()
   }
 
   return (

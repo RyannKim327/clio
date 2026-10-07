@@ -1,3 +1,5 @@
+export type t_chapter = Record<string, c_chapter[]>
+
 export interface c_chapter {
   content: string
   music?: string
@@ -10,5 +12,5 @@ export interface c_book {
   author: string
   description: string
   cover?: string
-  chapters: Record<string, c_chapter[]>
+  chapters: t_chapter
 }

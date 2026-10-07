@@ -1,8 +1,11 @@
+import ChapterReader from "@/components/reader/chapter-reader";
+import NowPlaying from "@/components/reader/now-playing";
+import StartOverlay from "@/components/reader/start-overlay";
+import TableOfContents from "@/components/reader/table-of-contents";
 import { stories } from "@/data/stories";
-import { markdownToHtml } from "@/lib/markdown";
-import { splitSegmentsByStartEnd } from "@/lib/split-segments";
-import { ArrowLeft, Menu, X } from "lucide-react";
-import { useState } from "react";
+import type { c_chapter } from "@/types/book";
+import { ArrowLeft, Menu } from "lucide-react";
+import { useCallback, useLayoutEffect, useRef, useState } from "react";
 import { Link, useLocation, useNavigate, useParams, useSearchParams } from "react-router";
 
 export default function Read() {
@@ -11,21 +14,44 @@ export default function Read() {
   const location = useLocation()
   const navigate = useNavigate()
   const chapter = searchParams.get("c") ?? "chapter 1"
-  const story = stories[parseInt(id)]
-  const [showChapters, setShowChapters] = useState(false)
-  const chapters = splitSegmentsByStartEnd(story.chapters[chapter.toLowerCase()])
+  const story = stories[parseInt(id ?? "0")]
+  const paragraphs: c_chapter[] = story.chapters[chapter.toLowerCase()] ?? []
+  const scrollRef = useRef<HTMLDivElement | null>(null)
 
-  function toTop() {
-    const _ = document.getElementById("headToTop");
-    if (_) {
-      _.scrollIntoView({
-        behavior: "smooth",
-      });
-    }
+  const [showChapters, setShowChapters] = useState(false)
+  const [hasInteracted, setHasInteracted] = useState(false)
+  const [isPlaying, setIsPlaying] = useState(false)
+  const [muted, setMuted] = useState(false)
+  const [volume] = useState(0.85)
+
+  const handlePlayingChange = useCallback((playing: boolean) => {
+    setIsPlaying(playing)
+  }, [])
+
+  // Jump to the top whenever the selected chapter changes so the reader
+  // starts at the chapter heading. Runs before paint so the new paragraphs'
+  // IntersectionObserver entries are computed against the reset position.
+  useLayoutEffect(() => {
+    scrollRef.current?.scrollTo({ top: 0 })
+  }, [chapter])
+
+  function handleSelectChapter(chap: string) {
+    setShowChapters(false)
+    const params = new URLSearchParams(location.search)
+    params.set("c", chap)
+    navigate(`${location.pathname}?${params.toString()}`)
   }
 
   return (
     <div className="flex flex-col items-center w-full h-full gap-2 overflow-x-hidden">
+      {!hasInteracted && (
+        <StartOverlay
+          title={story.title}
+          description={story.description}
+          onStart={() => setHasInteracted(true)}
+        />
+      )}
+
       <div className="flex items-center w-full bg-secondary-bg border-b-2 border-b-solid border-border sticky z-10 top-0 p-2 px-3 gap-3">
         <Link to="/">
           <ArrowLeft />
@@ -38,37 +64,13 @@ export default function Read() {
       </div>
 
       <div className="flex w-[calc(90%-1rem)] justify-between h-full overflow-hidden">
-        <div className={`flex flex-col w-[calc(75%-0.5rem)] md:w-[calc(25%-1rem)] overflow-y-auto fixed ${showChapters ? "left-0" : "-left-full"} p-5 md:p-0 top-15 bottom-0 bg-bg md:sticky transition-all delay-75`}>
-          <div className="flex justify-between md:justify-center bg-secondary-bg p-2 text-center mb-5">
-            <span className="font-serif font-semibold">Chapter Lists</span>
-            <span
-              onClick={() => {
-                setShowChapters(false)
-              }}
-              className={`md:hidden cursor-pointer`}>
-              <X />
-            </span>
-          </div>
-          <div className="flex flex-col gap-2 overflow-y-auto">
-            {
-              Object.keys(story.chapters).map((chap, i: number) => {
-                return (
-                  <span
-                    key={i}
-                    className={`border-b border-b-solid border-fg hover:border-border font-serif hover:text-border p-2 cursor-pointer select-none ${chap.toLowerCase() === chapter.toLowerCase() ? "border-b-border text-border" : ""}`}
-                    onClick={() => {
-                      toTop()
-                      setShowChapters(false)
-                      const params = new URLSearchParams(location.search)
-                      params.set("c", chap)
-                      navigate(`${location.pathname}?${params.toString()}`)
-                    }}
-                  > {chap.toUpperCase()}</span>
-                )
-              })
-            }
-          </div>
-        </div>
+        <TableOfContents
+          chapters={Object.keys(story.chapters)}
+          activeChapter={chapter}
+          open={showChapters}
+          onClose={() => setShowChapters(false)}
+          onSelect={handleSelectChapter}
+        />
         <div className="flex flex-col w-full md:w-[calc(70%-1rem)] gap-2">
           <div className="flex gap-2 md:justify-center bg-secondary-bg p-2 text-center font-serif font-semibold">
             <span
@@ -81,31 +83,26 @@ export default function Read() {
             {chapter.toUpperCase()}
           </div>
           <div
-            className="flex flex-col overflow-x-hidden scrollbar-thin scrollbar-thumb-secondary-bg snap-mandatory snap-y p-5"
+            ref={scrollRef}
+            className="flex flex-col overflow-x-hidden scrollbar-thin scrollbar-thumb-secondary-bg p-5"
           >
-            {
-              chapters.map((line, i: number) => {
-                return (
-                  <div
-                    key={i}
-                    className="min-h-full snap-start overflow-y-auto scrollbar-none">
-
-                    {line.map((c, j: number) => {
-                      return (
-                        <p
-                          id={`${i}:${j}`}
-                          key={`${i}:${j}`}
-                          className="font-semibold font-serif"
-                          dangerouslySetInnerHTML={{ __html: markdownToHtml(c.content) }} />
-                      )
-                    })}
-                  </div>
-                )
-              })
-            }
+            <ChapterReader
+              chapter={chapter}
+              paragraphs={paragraphs}
+              canPlay={hasInteracted}
+              volume={volume}
+              muted={muted}
+              onPlayingChange={handlePlayingChange}
+            />
           </div>
         </div>
       </div>
+
+      <NowPlaying
+        visible={isPlaying && hasInteracted}
+        muted={muted}
+        onToggleMute={() => setMuted((prev) => !prev)}
+      />
     </div >
   )
 }

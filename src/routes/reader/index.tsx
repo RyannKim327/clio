@@ -44,7 +44,7 @@ export default function Reader() {
         </div>
       </div>
       <Modal closeModal={closeModal} show={action === "book" && book !== null}>
-        <BookPreview book={book} />
+        {book ? <BookPreview book={book} /> : null}
       </Modal>
     </div>
   )

@@ -19,6 +19,7 @@ export const stories: c_book[] = [
           content: "'Maybe it's a mistake,' suggested Aika, Kaito's classmate, adjusting her glasses. 'They probably mixed up the forms from another school.' Mrs. Kondo frowned, tapping her pen against the paper. 'No, this is our form. Our letterhead. Dated today. But I don't...' She trailed off, flipping through a thick binder of student records. Kaito watched her thumb move down the alphabetical list. Shirai, Shirakawa, Shirayama. No Shirayuki. 'How strange,' Mrs. Kondo muttered, more to herself than to the gathering crowd. 'Well, if she shows up, send her to the office.' The window slid shut with a decisive click."
         },
         {
+          music: "https://example.com/audio/musix2.mp3",
           content: "Nozomi Shirayuki showed up on Thursday."
         },
         {
@@ -43,13 +44,13 @@ export const stories: c_book[] = [
       ],
       "chapter 2": [
         {
-          music: "https://example.com/audio/empty-alley-wind-chimes.mp3",
           content: "Kaito didn't tell anyone about the alley. What would he say? That he followed a girl who knew impossible things into a dead end that didn't appear on any map? That her footprints had vanished into air? He would be laughed at. Worse, he would be worried about. His mother had enough to deal with since his father left; she didn't need a son who was seeing things. So he kept his mouth shut and his eyes open, and when Nozomi Shirayuki sat down in the window seat the next morning as if nothing had happened, Kaito pretended he hadn't spent the entire night staring at his ceiling, replaying the moment in the alley until his memory of it felt like a copied cassette, degraded and fuzzy at the edges."
         },
         {
           content: "'You followed me,' Nozomi said. It wasn't a question. She was looking out at the courtyard, where the rain had washed the last of the cherry blossoms into the drains. 'I'm sorry,' Kaito said automatically, then caught himself. 'Wait, no. You knew things about me. Private things. I had a right to — ' 'You had a right,' Nozomi repeated, as if tasting the words. 'Yes. I suppose you did. Did you find what you were looking for?' Kaito thought of the blank brick wall, the dead ivy, the footprints ending in nothing. 'No,' he said quietly. 'I didn't find anything.' Nozomi turned to him then, and her smile was different this time. Not sad. Not gentle. Resigned. 'Good,' she said. 'Some doors should stay closed.'"
         },
         {
+          music: "https://example.com/audio/empty-alley-wind-chimes.mp3",
           content: "But the door, whatever it was, had already opened. Kaito started to notice things. Small things at first, easy to dismiss. The way the classroom lights flickered whenever Nozomi turned a page in her blank notebook. The way the emergency broadcast system test on Wednesday seemed to say her name in the static between the all-clear tones — a trick of the ear, surely. The way his phone camera refused to focus on her face, always defaulting to the background, as if whatever she was couldn't be captured by a lens. He borrowed Aika's phone during lunch. Same result. Nozomi Shirayuki could not be photographed."
         },
         {
@@ -62,6 +63,7 @@ export const stories: c_book[] = [
           content: "On the seventh day, Nozomi knew everyone's secrets. Not just Kaito's. She knew that Mr. Yamada, the math teacher, had a daughter he never spoke about, a girl with cerebral palsy who lived in a facility in Nara. She knew that Aika's parents were getting divorced, though Aika herself had told no one, the knowledge hidden behind her perfect grades and her careful smile. She knew which students were cutting themselves in the bathroom stalls, which ones were stealing from convenience stores, which ones went home to empty apartments and ate convenience store onigiri in front of a television that no one had asked them to turn off. She didn't use this knowledge cruelly. She simply knew, and sometimes, when the weight of it seemed too much for her small frame, she would press her hand against her chest as if checking for a heartbeat she wasn't sure was still there."
         },
         {
+          music: "https://example.com/audio/audio2.mp3",
           content: "'Why are you here?' Kaito asked her on the eighth day, during the lunch period she never ate through. The rain had returned, drumming against the windows, turning the world outside into a watercolor wash of gray and neon. Nozomi was drawing in her unlined notebook — not writing, Kaito realized, but sketching. Fine, precise lines that resolved, as he watched, into the image of a bridge. Not a famous bridge. Not a bridge he recognized. Just a simple steel structure spanning a slow brown river, its railings painted green, its surface pocked with rust. 'I'm looking for something,' Nozomi said, her pencil never pausing. 'Something I lost.' 'What?' Kaito leaned closer. The bridge was rendered in extraordinary detail. He could see the individual rivets, the patches where the paint had peeled away, the small plaque on the railing that bore a date: 1987. 'My death,' Nozomi said calmly. Then she turned the page, and the bridge was gone, replaced by a blank white sheet that seemed to glow in the fluorescent light. 'Or rather, the truth of it. The person who found it first got it wrong. And I've been waiting thirty-seven years for someone to notice.' Kaito's spoon clattered against his bento box. The classroom seemed very loud and very far away. 'Thirty-seven years,' he repeated, his voice sounding like it belonged to someone else. 'You don't look thirty-seven.' Nozomi smiled, and in that smile Kaito saw something ancient wearing a teenage face like a mask. 'I don't,' she agreed. 'I was fifteen when I died. In 1987. Under that bridge. And no one has remembered me correctly since.'"
         },
         {

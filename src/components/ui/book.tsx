@@ -11,6 +11,11 @@ export default function Book({
   cover,
   setAction
 }: book) {
+
+  if (!title || !author || !setAction) {
+    return null
+  }
+
   return (
     <div
       onClick={setAction}

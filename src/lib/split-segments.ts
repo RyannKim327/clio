@@ -1,6 +1,8 @@
-export function splitSegmentsByStartEnd(segments = []) {
-  const blocks = [];
-  let currentBlock = [];
+import type { c_chapter } from "@/types/book";
+
+export function splitSegmentsByStartEnd(segments: c_chapter[] = []): c_chapter[][] {
+  const blocks: c_chapter[][] = [];
+  let currentBlock: c_chapter[] = [];
   let inBlock = false;
 
   for (const item of segments) {

@@ -5,7 +5,7 @@ export default function LoginForm() {
   const [password, setPassword] = useState("")
 
   function submitForm(event: SubmitEvent<HTMLFormElement>) {
-
+    event.preventDefault()
   }
 
   return (
