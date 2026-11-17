@@ -48,7 +48,7 @@ func Header(currentPage string) string {
 
 	return utils.HTParser(`
 		<header class="site-header">
-			<a class="brand" href="/">Istorya<span class="brand-dot">.</span></a>
+			<a class="brand" href="/">Clio<span class="brand-dot">.</span></a>
 			<nav class="site-nav">{navigation}</nav>
 		</header>
 	`, utils.PARAMS{
