@@ -1,0 +1,26 @@
+{
+  "novels": [
+    {
+      "id": "the-art-of-an-artist-1794933010587",
+      "title": "The art of an artist",
+      "author": "nopenname",
+      "description": "I don't know how to give this a description. Maybe I add nothing.",
+      "chapters": [
+        {
+          "title": "The Note",
+          "paragraphs": [
+            {
+              "content": "Good Morning! Once *you* found out this letter, I am *no* longer *here*. I wrote *this* letter out of the *blue*. I *hope* you *can find* *the* root of *cause*. *But* people *may* try to *depend* *to* someone, but *pride* let them be *alone*."
+            },
+            {
+              "content": "This is the letter sent to me this morning. I come home late because of my work. It is strange to be to have this letter as it is. This friend of mine always giving me this kind of letter as practice for what we so-called deduction challenge. We've been talking with different form of languages, but this one came different. But there's something I admit it is difficult one."
+            },
+            {
+              "content": "A few more time past until 10 in the evening comes and yet I can't figure out. Luckily, it is Saturday, I can go with him if ever. But a news came, and a body was found in a sea. I didn't watch the news, as I don't have interest, but after a gave a glance in the monitor, I found something strange. *\"Is this what he wanted me to know? But who is he?\"*"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
