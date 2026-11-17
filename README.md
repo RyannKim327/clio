@@ -1,18 +1,35 @@
-# Constellation
+# Clio
 
-A small, convention-over-configuration web framework for Go, built on top of
-[Gin](https://github.com/gin-gonic/gin). Constellation focuses on declarative
-routing, server-rendered HTML with a tiny template helper, and a sensible set of
-default middleware.
+Clio is a small web-based writing studio for designing novels. It lets you draft
+chapters in Markdown, preview them as you type, save them in a local library, and
+read them back with book-like typography and optional background-music markers.
 
-- **Declarative routes** — describe an endpoint with a `middleware.Route` value.
-- **Server-rendered pages** — compose HTML with `{placeholder}` templating.
-- **Batteries included** — CORS, bot/scraper detection, cookie auth, request
-  logging, custom 404 page, and static file serving.
-- **Zero config to start** — sensible defaults, with env-var overrides.
-- **Live reload** — ships with an [Air](https://github.com/air-verse/air) config.
+It is a Go application built with [Constellation](https://github.com/RyannKim327/constellation),
+a convention-over-configuration web framework built on Gin. Pages are
+server-rendered, static assets are embedded into the binary, and story data is
+stored in a JSON file.
 
----
+> Clio was used as the test subject for Constellation, the framework created by
+> Ryann Kim Sesgundo.
+
+## Features
+
+- **Novel composer** — create a novel with a title, author, description, and
+  first chapter from `/compose`.
+- **Chapter management** — append chapters and edit existing ones; blank chapter
+  titles are numbered automatically.
+- **Live Markdown preview** — writing pages post to `/api/markdown` and render a
+  preview with GitHub Flavored Markdown via Goldmark.
+- **Reader** — browse the library at `/read`, then read one chapter at a time with
+  a table of contents, previous/next navigation, and `?chapter=N` deep links.
+- **Story audio markers** — write `{https://example.com/music.mp3}` in a chapter
+  to start background music and `{stop}` to stop it. The reader unlocks playback
+  with a "Start reading" overlay, shows a now-playing bar, and pauses when the
+  tab is hidden.
+- **JSON API** — list and fetch novels, create novels, add/update chapters, and
+  render Markdown. Form submissions and JSON requests are both supported.
+- **Batteries included** — CORS, basic bot/scraper detection, optional cookie
+  access guard, request logging, custom 404 page, and embedded static files.
 
 ## Requirements
 
@@ -21,14 +38,23 @@ default middleware.
 
 ## Getting started
 
+Run commands from the repository root; the JSON store is resolved relative to it.
+
 ```bash
 git clone <repository-url>
-cd nextgo
+cd istorya
 go mod download
-go run ./src/main.go
+go run .
 ```
 
 Then open <http://localhost:8000>.
+
+You can also run the binary directly:
+
+```bash
+go build -o clio ./main.go
+./clio
+```
 
 ### Development with live reload
 
@@ -36,164 +62,121 @@ Then open <http://localhost:8000>.
 air
 ```
 
-Air builds `./src/main.go`, runs the binary, and rebuilds on changes to `.go`,
-`.css`, `.js`, and `.html` files. Build artifacts go to `tmp/`.
+Air uses `.air.toml`, builds `main.go` into `tmp/main`, and rebuilds when `.go`,
+`.css`, `.js`, or `.html` files change.
+
+## Configuration
+
+| Variable          | Default                                                                 | Description                                  |
+| ----------------- | ----------------------------------------------------------------------- | -------------------------------------------- |
+| `PORT`            | `8000`                                                                  | Port the HTTP server listens on.             |
+| `ALLOWED_ORIGINS` | `https://constellation-red.vercel.app,http://localhost:3000,http://localhost:5173` | Comma-separated CORS allow-list. |
+
+`PORT` takes precedence over the programmatic port argument, which falls back to
+`8000`. CORS allows `GET`, `POST`, `PATCH`, `PUT`, `DELETE`, and `OPTIONS`.
+
+## Routes
+
+### Pages
+
+| Method | Path                                  | Description                                      |
+| ------ | ------------------------------------- | ------------------------------------------------ |
+| `GET`  | `/`                                   | Landing page.                                    |
+| `GET`  | `/about`                              | Project overview.                                |
+| `GET`  | `/compose`                            | New-novel form with live Markdown preview.       |
+| `GET`  | `/compose/chapter`                    | Add a chapter to an existing novel.              |
+| `GET`  | `/compose/chapter/:id/:chapter/edit`  | Edit an existing chapter.                        |
+| `GET`  | `/read`                               | Novel library.                                   |
+| `GET`  | `/read/:id`                           | Chapter reader with TOC and audio controls.      |
+| `GET`  | `/static/*`                           | Embedded stylesheet and other static assets.     |
+
+### API
+
+| Method | Path                                        | Description                        |
+| ------ | ------------------------------------------- | ---------------------------------- |
+| `GET`  | `/api`                                      | Example JSON response.             |
+| `GET`  | `/api/novels`                               | List all novels.                   |
+| `GET`  | `/api/novels/:id`                           | Get one novel.                     |
+| `POST` | `/api/novels`                               | Create a novel with its first chapter. |
+| `POST` | `/api/novels/:id/chapters`                  | Append a chapter.                  |
+| `PUT`  | `/api/novels/:id/chapters/:chapter`         | Update a chapter (1-based number). |
+| `POST` | `/api/novels/:id/chapters/:chapter/update`  | Form-friendly update endpoint.     |
+| `POST` | `/api/markdown`                             | Render story Markdown to HTML.     |
+
+API handlers return JSON when the request `Content-Type` is `application/json`;
+otherwise they accept form fields and redirect the browser after a successful
+write.
+
+## Data storage
+
+Novels are stored in `src/backend/novels.json` as a single `novels` array. Each
+novel has an ID, title, author, description, and chapters; each chapter has a
+title and paragraphs of Markdown content. Access is serialized with a mutex, and
+IDs are generated from a slug plus a millisecond timestamp.
+
+This is intentionally simple file-backed storage: there is no database,
+authentication system, or user accounts yet.
+
+## Architecture
+
+`main.go` calls `src.Main`, which registers the routes in `src/index.go` and
+hands them to the bootstrap layer in `config/main.go`.
+
+A route is described with `middleware.Route`:
+
+```go
+var Page = middleware.Route{
+    Method:     utils.METHOD_GET,
+    Path:       "/example",
+    Permission: utils.PERMISSION_ALL,
+    Title:      "Example · Clio",
+    Handler:    handler,
+}
+```
+
+Handlers return an HTML body plus a parameter map, and the framework wraps the
+result in the page shell. API handlers write directly with `ctx.JSON(...)` and
+return an empty body with `nil` parameters.
 
 ## Project structure
 
 ```
 .
-├── .air.toml                 # Air live-reload configuration
-├── main.go                   # Constellation() bootstrap
-├── go.mod
-├── go.sum
+├── main.go                    # Entry point
 ├── config/
-│   ├── middleware/
-│   │   ├── access-controller.go   # Cookie-based access guard
-│   │   ├── scraper-detector.go    # Bot / scraper detection
-│   │   ├── route-controller.go    # Route type
-│   │   └── server-controller.go   # CORS, route registration, server start
-│   └── utils/
-│       ├── markdown.go       # Markdown -> HTML rendering
-│       ├── render.go         # HTML templating and page rendering
-│       └── statics.go        # HTTP method + permission constants, handler type
-├── docs/                     # Markdown documentation (source of truth)
-├── tools/md2go/              # Markdown -> Go documentation generator
-└── src/
-    ├── main.go              # Entrypoint and route registry
-    ├── backend/api.go        # Example JSON API route
-    ├── routes/
-    │   ├── index.go          # Main landing page
-    │   ├── about.go          # Project overview
-    │   ├── docs.go           # Documentation index and shared docs layout
-    │   ├── docs_*.go         # Generated from docs/*.md
-    │   ├── samples.go        # Sample index
-    │   └── sample_*.go       # Sample route files
-    └── static/
-        └── styles.css        # Stylesheet served at /static/styles.css
+│   ├── main.go                # Bootstrap: CORS, route registration, server start
+│   ├── middleware/            # Routes, CORS, bot guard, cookie guard, server
+│   └── utils/                 # Templating, rendering, constants
+├── src/
+│   ├── index.go               # App route registry
+│   ├── embed.go               # Embedded static assets
+│   ├── backend/               # Novel store and JSON APIs
+│   │   └── novels.json        # File-backed novel data
+│   ├── routes/                # Page handlers
+│   ├── components/            # Shared header and live-preview components
+│   ├── utils/                 # Story Markdown rendering
+│   └── static/styles.css      # Site stylesheet
+├── tools/md2go/               # Standalone Markdown-to-Go generator
+└── .air.toml                  # Air live-reload configuration
 ```
 
-## How it works
+## Notes
 
-The entrypoint registers every route and hands them to the framework:
-
-```go
-// src/main.go
-var _routes = []mw.Route{
-    backend.API,
-    routes.Index,
-}
-
-func main() {
-    c.Constellation(_routes)
-}
-```
-
-`Constellation` sets up CORS, registers each route, and starts the server.
-
-### Defining a route
-
-A route is a `middleware.Route`:
-
-```go
-var Hello = middleware.Route{
-    Method: utils.METHOD_GET,   // optional, defaults to GET
-    Path:   "/hello",           // lowercased automatically
-    Handler: func(ctx *gin.Context) (string, map[string]any) {
-        return `<h1>Hello {name}</h1>`, map[string]any{"name": "World"}
-    },
-}
-```
-
-Then add it to `_routes` in `src/main.go`.
-
-### Handler contract
-
-Every handler has the signature:
-
-```go
-func(ctx *gin.Context) (string, map[string]any)
-```
-
-- Return an **HTML body** and a **parameter map** and Constellation renders a full
-  page for you (with escaping applied to the parameters).
-- Return `(nil, nil)` after writing the response yourself (e.g. `ctx.JSON(...)`)
-  and no rendering happens.
-
-```go
-func api(ctx *gin.Context) (string, map[string]any) {
-    ctx.JSON(200, gin.H{"message": "Hello"})
-    return "", nil
-}
-```
-
-### Rendering HTML
-
-`utils.HTParser` performs raw `{placeholder}` substitution (no escaping — use it
-for trusted, pre-built fragments). `utils.Render` wraps a body in the HTML
-document shell and escapes the supplied parameters.
-
-See [docs/rendering.md](docs/rendering.md) for details.
-
-## Configuration
-
-| Variable          | Default                                          | Description                          |
-| ----------------- | ------------------------------------------------ | ------------------------------------ |
-| `PORT`            | `8000`                                           | Port the server listens on.          |
-| `ALLOWED_ORIGINS` | `http://localhost:3000,http://localhost:5173`    | Comma-separated CORS allow-list.     |
-
-The port can also be passed programmatically via `StartServer(port)`; `PORT`
-takes precedence, then the argument, then `8000`.
-
-## Built-in routes
-
-| Method | Path              | Description                                         |
-| ------ | ----------------- | --------------------------------------------------- |
-| `GET`  | `/`               | Main landing page.                                  |
-| `GET`  | `/about`          | Project overview and repository layout.             |
-| `GET`  | `/docs`           | Documentation index generated from `docs/*.md`.     |
-| `GET`  | `/docs/<slug>`    | One rendered Markdown document per file in `docs/`. |
-| `GET`  | `/samples`        | Index of the sample routes.                         |
-| `GET`  | `/samples/json`   | Sample JSON endpoint.                               |
-| `GET`  | `/samples/form`   | Sample form page.                                   |
-| `POST` | `/samples/form/submit` | Sample form submission.                        |
-| `GET`  | `/api`            | Example JSON API response.                          |
-| `GET`  | `/static/*`       | Static files from `src/static`.                     |
-
-## Documentation
-
-- [Architecture overview](docs/architecture.md)
-- [Routing](docs/routing.md)
-- [Middleware](docs/middleware.md)
-- [Rendering](docs/rendering.md)
-- [Components](docs/components.md)
-- [Configuration](docs/configuration.md)
-- [Samples](docs/samples.md)
-
-The documentation is also available at `/docs`. Markdown files in `docs/` are
-converted into Go files under `src/routes/` so the pages do not read from disk at
-request time. After editing a Markdown file, regenerate the Go files:
-
-```bash
-go generate ./src/routes
-```
-
-## Known limitations
-
-- Bot detection in `BotProtection` is a simple `User-Agent` heuristic; harden it
-  before relying on it in production.
-- Middleware is attached at route-registration time in Gin. CORS and the
-  developer header are registered before routes; the request logger added in
-  `StartServer` only applies to handlers registered after it.
-- `PERMISSION_ADMIN` is defined but not enforced yet.
+- Bot protection is a simple `User-Agent` heuristic; harden it before relying on
+  it in production.
+- The cookie access guard exists in the framework but is not used by Clio's
+  current routes.
+- Some lower-level package and module names still use earlier project names; the
+  product name is Clio.
 
 ## License
 
 No license has been specified for this project.
 
 ## Credits
+
 > [!NOTE]
-> People mentioned in are not just part of the project, but also they were being part of the my journey.
+> People mentioned here are not just part of the project, but were also part of my journey.
 
 **Ground Zero Community**
 * Justeen James Tolentino
