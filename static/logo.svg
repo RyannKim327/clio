@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" fill="none" role="img" aria-labelledby="clio-title">
+  <title id="clio-title">Clio</title>
+  <path d="M31 23c-5.5-3.7-12-4.8-19-3v27c7-1.8 13.5-.7 19 3V23Z" stroke="#e8c27a" stroke-width="2.4" stroke-linejoin="round"/>
+  <path d="M31 23c5.5-3.7 12-4.8 19-3v27c-7-1.8-13.5-.7-19 3V23Z" stroke="#e8c27a" stroke-width="2.4" stroke-linejoin="round"/>
+  <path d="M31 23v27" stroke="#e8c27a" stroke-width="2.4" stroke-linecap="round"/>
+  <path d="M40 20c5-6.6 10-9.7 16-10-1 6.6-4.6 11.7-10.5 14.8L40 20Z" fill="#fb923c"/>
+  <path d="m39.5 24.5-8.7 15.8m0 0-3.3 8 8-3.3" stroke="#fb923c" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="m16 9 1.6 4.4L22 15l-4.4 1.6L16 21l-1.6-4.4L10 15l4.4-1.6L16 9Z" fill="#fb923c"/>
+</svg>
